@@ -1,0 +1,301 @@
+[
+  {
+    "id": "pm-kisan-samman-nidhi",
+    "name": "PM-KISAN Samman Nidhi",
+    "category": "farmer",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 100,
+    "max_income_inr": 250000,
+    "occupations": ["farmer", "agricultural_worker"],
+    "benefit_summary": "Direct income support of INR 6,000 per year in three equal installments of INR 2,000 to landholding farmer families.",
+    "benefit_score": 85,
+    "urgency_score": 78,
+    "documents_required": [
+      "Aadhaar Card",
+      "Landholding / Khatauni Records",
+      "Bank Account Passbook (Aadhaar-seeded)",
+      "Active Mobile Number"
+    ],
+    "official_portal": "https://pmkisan.gov.in/"
+  },
+  {
+    "id": "pm-fasal-bima-yojana",
+    "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "category": "farmer",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 85,
+    "max_income_inr": 500000,
+    "occupations": ["farmer", "tenant_farmer"],
+    "benefit_summary": "Comprehensive crop insurance covering yield losses due to natural calamities, pests, and diseases at heavily subsidized premiums (1.5%-2%).",
+    "benefit_score": 82,
+    "urgency_score": 92,
+    "documents_required": [
+      "Aadhaar Card",
+      "Land Records or Tenancy Agreement",
+      "Sowing Certificate",
+      "Bank Account Details"
+    ],
+    "official_portal": "https://pmfby.gov.in/"
+  },
+  {
+    "id": "kisan-credit-card",
+    "name": "Kisan Credit Card (KCC) Scheme",
+    "category": "farmer",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 75,
+    "max_income_inr": null,
+    "occupations": ["farmer", "fisherman", "dairy_farmer"],
+    "benefit_summary": "Short-term working capital credit up to INR 3 lakh at an effective 4% annual interest rate with prompt repayment subvention.",
+    "benefit_score": 80,
+    "urgency_score": 70,
+    "documents_required": [
+      "Aadhaar Card & PAN Card",
+      "Land Ownership / Cultivation Proof",
+      "Passport-size Photographs",
+      "Filled KCC Application Form"
+    ],
+    "official_portal": "https://www.myscheme.gov.in/schemes/kcc"
+  },
+  {
+    "id": "nsp-post-matric-scholarship",
+    "name": "National Post-Matric Scholarship",
+    "category": "student",
+    "states": ["ALL"],
+    "min_age": 15,
+    "max_age": 30,
+    "max_income_inr": 250000,
+    "occupations": ["student"],
+    "benefit_summary": "Annual tuition fee reimbursement and monthly maintenance allowance for eligible students pursuing Class 11 through postgraduate studies.",
+    "benefit_score": 88,
+    "urgency_score": 90,
+    "documents_required": [
+      "Aadhaar Card",
+      "Family Income Certificate",
+      "Previous Year Marksheet",
+      "Bonafide Student Certificate",
+      "Bank Account Passbook"
+    ],
+    "official_portal": "https://scholarships.gov.in/"
+  },
+  {
+    "id": "pm-yasasvi-scholarship",
+    "name": "PM YASASVI Scholarship Scheme",
+    "category": "student",
+    "states": ["ALL"],
+    "min_age": 14,
+    "max_age": 22,
+    "max_income_inr": 250000,
+    "occupations": ["student"],
+    "benefit_summary": "Merit-based scholarship providing up to INR 75,000/year for Class 9-10 and up to INR 1,25,000/year for Class 11-12 students in top schools.",
+    "benefit_score": 90,
+    "urgency_score": 85,
+    "documents_required": [
+      "Aadhaar Card",
+      "Income Certificate",
+      "Category / Domicile Certificate",
+      "School Enrollment & Marksheet"
+    ],
+    "official_portal": "https://yet.nta.ac.in/"
+  },
+  {
+    "id": "pm-vidyalaxmi-education",
+    "name": "PM-Vidyalaxmi Higher Education Support",
+    "category": "student",
+    "states": ["ALL"],
+    "min_age": 17,
+    "max_age": 32,
+    "max_income_inr": 800000,
+    "occupations": ["student"],
+    "benefit_summary": "Collateral-free, guarantor-free education loans with 3% interest subvention for students admitted to top-ranked Indian higher education institutions.",
+    "benefit_score": 84,
+    "urgency_score": 74,
+    "documents_required": [
+      "Aadhaar Card & PAN Card",
+      "Admission Letter from Eligible Institution",
+      "Family Income Proof",
+      "Academic Transcripts"
+    ],
+    "official_portal": "https://pmvidyalaxmi.co.in/"
+  },
+  {
+    "id": "pm-jan-arogya-yojana",
+    "name": "Ayushman Bharat PM-JAY",
+    "category": "welfare",
+    "states": ["ALL"],
+    "min_age": 0,
+    "max_age": 120,
+    "max_income_inr": 300000,
+    "occupations": ["ALL"],
+    "benefit_summary": "Cashless secondary and tertiary hospitalization coverage up to INR 5 lakh per family per year across empaneled public and private hospitals.",
+    "benefit_score": 95,
+    "urgency_score": 88,
+    "documents_required": [
+      "Aadhaar Card",
+      "Ration Card / SECC Family ID",
+      "Income Certificate (where applicable)"
+    ],
+    "official_portal": "https://beneficiary.nha.gov.in/"
+  },
+  {
+    "id": "pm-awas-yojana",
+    "name": "Pradhan Mantri Awas Yojana (PMAY)",
+    "category": "welfare",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 75,
+    "max_income_inr": 600000,
+    "occupations": ["ALL"],
+    "benefit_summary": "Financial assistance and interest subsidy for first-time home construction or purchase for Economically Weaker Sections and Low-Income Groups.",
+    "benefit_score": 92,
+    "urgency_score": 75,
+    "documents_required": [
+      "Aadhaar Card",
+      "Income Certificate",
+      "Bank Account Details",
+      "Affidavit of No Pucca House Ownership"
+    ],
+    "official_portal": "https://pmaymis.gov.in/"
+  },
+  {
+    "id": "atal-pension-yojana",
+    "name": "Atal Pension Yojana (APY)",
+    "category": "welfare",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 40,
+    "max_income_inr": 500000,
+    "occupations": ["unorganized_worker", "self_employed", "farmer", "homemaker", "artisan"],
+    "benefit_summary": "Government-backed guaranteed monthly pension between INR 1,000 and INR 5,000 starting at age 60 for unorganized sector workers.",
+    "benefit_score": 76,
+    "urgency_score": 65,
+    "documents_required": [
+      "Aadhaar Card",
+      "Savings Bank Account",
+      "Active Mobile Number for Auto-Debit"
+    ],
+    "official_portal": "https://www.npscra.nsdl.co.in/scheme-details.php"
+  },
+  {
+    "id": "ladki-bahin-maharashtra",
+    "name": "Mukhyamantri Majhi Ladki Bahin Yojana",
+    "category": "women",
+    "states": ["Maharashtra"],
+    "min_age": 21,
+    "max_age": 65,
+    "max_income_inr": 250000,
+    "occupations": ["homemaker", "self_employed", "unorganized_worker", "farmer", "student", "salaried"],
+    "benefit_summary": "Monthly direct benefit transfer of INR 1,500 to eligible women residents of Maharashtra for financial independence and nutrition.",
+    "benefit_score": 86,
+    "urgency_score": 84,
+    "documents_required": [
+      "Aadhaar Card",
+      "Maharashtra Domicile Certificate / Ration Card",
+      "Income Certificate (below INR 2.5 lakh)",
+      "Aadhaar-linked Bank Account"
+    ],
+    "official_portal": "https://ladakibahin.maharashtra.gov.in/"
+  },
+  {
+    "id": "pm-matru-vandana-yojana",
+    "name": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+    "category": "women",
+    "states": ["ALL"],
+    "min_age": 19,
+    "max_age": 45,
+    "max_income_inr": 800000,
+    "occupations": ["ALL"],
+    "benefit_summary": "Maternity benefit of INR 5,000 in installments for pregnant women and lactating mothers to support nutrition and wage loss compensation.",
+    "benefit_score": 83,
+    "urgency_score": 86,
+    "documents_required": [
+      "Aadhaar Card",
+      "MCP (Mother and Child Protection) Card",
+      "Bank or Post Office Passbook",
+      "Income / Eligibility Proof"
+    ],
+    "official_portal": "https://pmmvy.wcd.gov.in/"
+  },
+  {
+    "id": "lakhpati-didi-shg",
+    "name": "Lakhpati Didi Self-Help Group Mission",
+    "category": "women",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 60,
+    "max_income_inr": 300000,
+    "occupations": ["self_employed", "artisan", "homemaker", "farmer"],
+    "benefit_summary": "Skill training, interest-free/low-interest micro-credit, and market linkage enabling rural SHG women to earn INR 1 lakh+ annually.",
+    "benefit_score": 84,
+    "urgency_score": 72,
+    "documents_required": [
+      "Aadhaar Card",
+      "Self-Help Group (SHG) Membership ID",
+      "Bank Account Passbook",
+      "Residence Proof"
+    ],
+    "official_portal": "https://lakhpatididi.gov.in/"
+  },
+  {
+    "id": "pm-mudra-yojana",
+    "name": "Pradhan Mantri MUDRA Yojana (PMMY)",
+    "category": "msme",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 65,
+    "max_income_inr": null,
+    "occupations": ["msme_owner", "self_employed", "artisan", "entrepreneur"],
+    "benefit_summary": "Collateral-free micro and small business loans up to INR 20 lakh across Shishu, Kishore, Tarun, and Tarun Plus categories.",
+    "benefit_score": 89,
+    "urgency_score": 76,
+    "documents_required": [
+      "Aadhaar Card & PAN Card",
+      "Business Plan / Quotation of Machinery",
+      "Udyam Registration (if available)",
+      "6-Month Bank Statement"
+    ],
+    "official_portal": "https://www.mudra.org.in/"
+  },
+  {
+    "id": "pm-vishwakarma-yojana",
+    "name": "PM Vishwakarma Artisan & Craft Scheme",
+    "category": "msme",
+    "states": ["ALL"],
+    "min_age": 18,
+    "max_age": 65,
+    "max_income_inr": 400000,
+    "occupations": ["artisan", "self_employed", "msme_owner"],
+    "benefit_summary": "Recognition certificate, INR 15,000 toolkit grant, skill stipend of INR 500/day, and collateral-free enterprise credit up to INR 3 lakh at 5% interest.",
+    "benefit_score": 87,
+    "urgency_score": 82,
+    "documents_required": [
+      "Aadhaar Card",
+      "Ration Card",
+      "Bank Account Details",
+      "Traditional Trade / Artisan Proof"
+    ],
+    "official_portal": "https://pmvishwakarma.gov.in/"
+  },
+  {
+    "id": "ignoaps-senior-pension",
+    "name": "Indira Gandhi National Old Age Pension (IGNOAPS)",
+    "category": "senior_citizen",
+    "states": ["ALL"],
+    "min_age": 60,
+    "max_age": 120,
+    "max_income_inr": 150000,
+    "occupations": ["ALL"],
+    "benefit_summary": "Monthly social security pension (central share plus state top-up) for senior citizens aged 60+ belonging to Below Poverty Line households.",
+    "benefit_score": 85,
+    "urgency_score": 88,
+    "documents_required": [
+      "Aadhaar Card",
+      "Age Proof (Birth Certificate / Voter ID)",
+      "BPL Card / Income Certificate",
+      "Bank or Post Office Account"
+    ],
+    "official_portal": "https://nsap.nic.in/"
+  }
+]

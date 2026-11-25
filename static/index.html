@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicBridge — Public Scheme &amp; Benefit Navigator</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div>
+        <p class="brand-tag">CivicTech • Deterministic + Grounded AI</p>
+        <h1>CivicBridge</h1>
+        <p class="subtitle">Discover verified Indian public welfare, scholarship, farmer, women, MSME, and senior citizen schemes tailored to your profile.</p>
+      </div>
+      <div class="header-badge" aria-label="Privacy guarantee">
+        <span class="badge-dot" aria-hidden="true"></span>
+        PII-Safe &amp; Rule-Verified
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container main-layout">
+    <section class="card form-section" aria-labelledby="form-heading">
+      <div class="section-header">
+        <h2 id="form-heading">1. Your Profile &amp; Context</h2>
+        <div class="preset-group" role="group" aria-label="Sample citizen profiles">
+          <button type="button" class="btn-chip" data-preset="student">Student</button>
+          <button type="button" class="btn-chip" data-preset="farmer">Farmer</button>
+          <button type="button" class="btn-chip" data-preset="women">Women (MH)</button>
+          <button type="button" class="btn-chip" data-preset="msme">MSME</button>
+          <button type="button" class="btn-chip" data-preset="senior">Senior</button>
+        </div>
+      </div>
+
+      <form id="eligibility-form" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="age">Age (years) <span aria-hidden="true">*</span></label>
+            <input id="age" name="age" type="number" min="0" max="120" required value="22" aria-describedby="age-hint">
+            <span id="age-hint" class="field-hint">Enter age between 0 and 120.</span>
+          </div>
+
+          <div class="field">
+            <label for="state">State / Union Territory <span aria-hidden="true">*</span></label>
+            <select id="state" name="state" required>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Other">Other State / UT</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="occupation">Primary Occupation <span aria-hidden="true">*</span></label>
+            <select id="occupation" name="occupation" required>
+              <option value="student">Student</option>
+              <option value="farmer">Farmer</option>
+              <option value="agricultural_worker">Agricultural Worker</option>
+              <option value="homemaker">Homemaker</option>
+              <option value="self_employed">Self-Employed</option>
+              <option value="msme_owner">MSME / Business Owner</option>
+              <option value="artisan">Artisan / Craftsperson</option>
+              <option value="unorganized_worker">Unorganized Sector Worker</option>
+              <option value="salaried">Salaried Employee</option>
+              <option value="retired">Retired / Senior Citizen</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="annual_income_inr">Annual Household Income (INR) <span aria-hidden="true">*</span></label>
+            <input id="annual_income_inr" name="annual_income_inr" type="number" min="0" max="100000000" step="5000" required value="180000" aria-describedby="income-hint">
+            <span id="income-hint" class="field-hint">Total yearly family income in Indian Rupees.</span>
+          </div>
+
+          <div class="field">
+            <label for="category_goal">Priority Goal / Category</label>
+            <select id="category_goal" name="category_goal">
+              <option value="all">All Categories</option>
+              <option value="student">Student Scholarships &amp; Loans</option>
+              <option value="farmer">Farmer &amp; Agriculture</option>
+              <option value="women">Women Empowerment</option>
+              <option value="msme">MSME &amp; Artisans</option>
+              <option value="senior_citizen">Senior Citizen Support</option>
+              <option value="welfare">General Healthcare &amp; Housing</option>
+            </select>
+          </div>
+
+          <div class="field field-full">
+            <label for="question">Optional Question for the AI Guide</label>
+            <textarea id="question" name="question" rows="2" maxlength="1000" placeholder="e.g., Which scheme should I apply for first and what documents do I need?" aria-describedby="question-hint"></textarea>
+            <span id="question-hint" class="field-hint">Personal IDs (Aadhaar, PAN, phone, email) are automatically redacted before AI processing.</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button id="submit-btn" type="submit" class="btn-primary">
+            Find Eligible Schemes
+          </button>
+          <span id="status-live" class="status-text" role="status" aria-live="polite"></span>
+        </div>
+
+        <div id="error-banner" class="alert alert-error" role="alert" hidden></div>
+        <div id="warning-banner" class="alert alert-warning" role="status" aria-live="polite" hidden></div>
+      </form>
+    </section>
+
+    <div class="results-grid">
+      <section class="card results-section" aria-labelledby="results-heading">
+        <div class="section-header">
+          <h2 id="results-heading">2. Ranked Eligibility Results</h2>
+          <p id="results-summary" class="muted" aria-live="polite">Submit your profile to see deterministic scheme matches.</p>
+        </div>
+
+        <div id="eligible-container" class="scheme-group" aria-label="Eligible schemes"></div>
+        <div id="near-match-container" class="scheme-group" aria-label="Near-match schemes"></div>
+
+        <details id="not-eligible-details" class="not-eligible-details" hidden>
+          <summary id="not-eligible-summary">Not Eligible Schemes (0)</summary>
+          <div id="not-eligible-container" class="scheme-group"></div>
+        </details>
+      </section>
+
+      <aside class="card guide-section" aria-labelledby="guide-heading">
+        <div class="section-header">
+          <h2 id="guide-heading">3. AI Action Guide &amp; Checklist</h2>
+          <div class="guide-actions">
+            <button id="copy-guide-btn" type="button" class="btn-secondary" disabled>Copy Summary</button>
+            <button id="print-guide-btn" type="button" class="btn-secondary" disabled>Print</button>
+          </div>
+        </div>
+
+        <div id="guide-meta" class="guide-meta" aria-live="polite"></div>
+        <div id="guide-content" class="guide-content">
+          <p class="muted">Your personalized step-by-step application plan and interactive document checklist will appear here.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <p>CivicBridge • Deterministic eligibility rules verified before AI guidance. Always confirm final deadlines on official government portals.</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
