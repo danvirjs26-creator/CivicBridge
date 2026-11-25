@@ -1,6 +1,12 @@
 """Unit tests for the deterministic Eligibility & Priority Engine."""
 
-from app.engine import evaluate_all_schemes, evaluate_scheme, load_schemes
+from app.engine import (
+    _evaluate_default_cached,
+    clear_engine_caches,
+    evaluate_all_schemes,
+    evaluate_scheme,
+    load_schemes,
+)
 from app.models import SchemeRecord, UserContext
 
 
@@ -119,3 +125,30 @@ def test_boundary_age_and_null_income_cap():
     res = evaluate_scheme(high_income_farmer, kcc)
     assert res.status == "eligible"
     assert "No upper annual income cap" in res.matched_criteria
+
+
+def test_engine_lru_caching_hits_on_repeated_calls():
+    clear_engine_caches()
+    first = load_schemes()
+    second = load_schemes()
+    assert first is second
+    assert load_schemes.cache_info().hits >= 1
+
+    user_a = UserContext(
+        age=22,
+        state="Karnataka",
+        occupation="student",
+        annual_income_inr=150000,
+        category_goal="student",
+    )
+    user_b = UserContext(
+        age=22,
+        state="  karnataka ",
+        occupation="Student",
+        annual_income_inr=150000,
+        category_goal="STUDENT",
+    )
+    res_a = evaluate_all_schemes(user_a)
+    res_b = evaluate_all_schemes(user_b)
+    assert res_a == res_b
+    assert _evaluate_default_cached.cache_info().hits >= 1

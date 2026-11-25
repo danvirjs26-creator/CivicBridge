@@ -1,5 +1,6 @@
-"""Grounded AI guidance service using google-genai with deterministic fallback."""
+"""Grounded AI guidance service using google-genai with async timeout and fallback."""
 
+import asyncio
 import json
 import logging
 import os
@@ -12,7 +13,10 @@ from app.models import ActionStep, AIGuideResponse, SchemeMatch, UserContext
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite"
+DEFAULT_GEMINI_MODEL: str = "gemini-3.5-flash-lite"
+DEFAULT_AI_TIMEOUT_SECONDS: float = 8.0
+MAX_SCHEMES_FOR_AI: int = 5
+MAX_FALLBACK_STEPS: int = 4
 
 
 def _build_deterministic_fallback(
@@ -61,7 +65,7 @@ def _build_deterministic_fallback(
     steps: list[ActionStep] = []
     seen_docs: dict[str, None] = {}
 
-    for idx, match in enumerate(top_schemes[:4], start=1):
+    for idx, match in enumerate(top_schemes[:MAX_FALLBACK_STEPS], start=1):
         for doc in match.scheme.documents_required:
             seen_docs.setdefault(doc, None)
 
@@ -135,19 +139,43 @@ def _build_prompt(
     )
 
 
-def generate_action_guide(
+def _call_gemini_sync(api_key: str, model_name: str, prompt: str) -> str:
+    """Invoke google-genai synchronously (intended for threadpool execution)."""
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            temperature=0.2,
+            response_mime_type="application/json",
+        ),
+    )
+    return (response.text or "").strip()
+
+
+def _get_timeout_seconds() -> float:
+    """Parse AI timeout from environment, falling back to default on invalid values."""
+    raw = os.getenv("GEMINI_TIMEOUT_SECONDS", "").strip()
+    if not raw:
+        return DEFAULT_AI_TIMEOUT_SECONDS
+    try:
+        parsed = float(raw)
+        return parsed if parsed > 0 else DEFAULT_AI_TIMEOUT_SECONDS
+    except ValueError:
+        return DEFAULT_AI_TIMEOUT_SECONDS
+
+
+async def generate_action_guide(
     user: UserContext,
     eligible_schemes: list[SchemeMatch],
     near_match_schemes: list[SchemeMatch],
     sanitized_question: Optional[str] = None,
     pii_redacted: bool = False,
 ) -> AIGuideResponse:
-    """Generate a personalized action guide using Gemini, with deterministic fallback."""
+    """Generate a personalized action guide asynchronously with strict timeout and fallback."""
     model_name = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL).strip() or DEFAULT_GEMINI_MODEL
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
-
-    # Ground AI strictly on top verified eligible + near-match schemes (max 5)
-    top_schemes = (eligible_schemes + near_match_schemes)[:5]
+    top_schemes = (eligible_schemes + near_match_schemes)[:MAX_SCHEMES_FOR_AI]
 
     if not api_key or not top_schemes:
         return _build_deterministic_fallback(
@@ -159,18 +187,13 @@ def generate_action_guide(
         )
 
     prompt = _build_prompt(user, top_schemes, sanitized_question)
+    timeout_seconds = _get_timeout_seconds()
 
     try:
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                temperature=0.2,
-                response_mime_type="application/json",
-            ),
+        raw_text = await asyncio.wait_for(
+            asyncio.to_thread(_call_gemini_sync, api_key, model_name, prompt),
+            timeout=timeout_seconds,
         )
-        raw_text = (response.text or "").strip()
         parsed = json.loads(raw_text)
 
         steps = [
@@ -191,12 +214,20 @@ def generate_action_guide(
             model_used=model_name,
             pii_redacted=pii_redacted,
         )
-    except Exception as exc:  # noqa: BLE001 — intentional graceful degradation
-        logger.warning("Gemini guide generation failed (%s); using deterministic fallback.", exc)
-        return _build_deterministic_fallback(
-            user=user,
-            top_schemes=top_schemes,
-            sanitized_question=sanitized_question,
-            pii_redacted=pii_redacted,
-            model_name=model_name,
+    except asyncio.TimeoutError:
+        logger.warning(
+            "Gemini guide generation timed out after %.1fs; using deterministic fallback.",
+            timeout_seconds,
         )
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
+        logger.warning("Gemini response parsing failed (%s); using deterministic fallback.", exc)
+    except Exception as exc:  # noqa: BLE001 — intentional graceful degradation for external SDK errors
+        logger.warning("Gemini guide generation failed (%s); using deterministic fallback.", exc)
+
+    return _build_deterministic_fallback(
+        user=user,
+        top_schemes=top_schemes,
+        sanitized_question=sanitized_question,
+        pii_redacted=pii_redacted,
+        model_name=model_name,
+    )

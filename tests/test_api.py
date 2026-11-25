@@ -103,3 +103,38 @@ def test_index_page_served():
     resp = client.get("/")
     assert resp.status_code == 200
     assert "CivicBridge" in resp.text
+
+
+def test_gzip_compression_and_static_cache_control():
+    resp = client.get("/api/schemes", headers={"Accept-Encoding": "gzip"})
+    assert resp.status_code == 200
+    assert resp.headers.get("content-encoding") == "gzip"
+
+    css_resp = client.get("/static/styles.css")
+    assert css_resp.status_code == 200
+    assert css_resp.headers.get("cache-control") == "public, max-age=3600"
+
+
+def test_ai_timeout_triggers_deterministic_fallback(monkeypatch):
+    import asyncio
+
+    monkeypatch.setenv("GEMINI_API_KEY", "test-fake-key")
+    monkeypatch.setenv("GEMINI_TIMEOUT_SECONDS", "0.05")
+
+    async def slow_to_thread(*args, **kwargs):
+        await asyncio.sleep(0.2)
+        return "{}"
+
+    with patch("app.ai_service.asyncio.to_thread", side_effect=slow_to_thread):
+        payload = {
+            "age": 40,
+            "state": "Uttar Pradesh",
+            "occupation": "farmer",
+            "annual_income_inr": 120000,
+            "category_goal": "farmer",
+            "question": "How do I apply?",
+        }
+        resp = client.post("/api/evaluate", json=payload)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["ai_guide"]["source"] == "deterministic_fallback"
